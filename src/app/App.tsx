@@ -112,29 +112,29 @@ function FrameBorder() {
   return (
     <div
       className="fixed inset-0 pointer-events-none z-30"
-      style={{ padding: "26px" }}
+      style={{ padding: "36px" }}
       aria-hidden="true"
     >
       <div className="relative w-full h-full">
         {/* Main frame */}
         <div
           className="absolute inset-0"
-          style={{ border: "1px solid rgba(255,255,255,0.28)" }}
+          style={{ border: "2px solid rgba(255,255,255,0.36)" }}
         />
 
         {/* Top-left corner solid bracket */}
         <div
           className="absolute top-0 left-0"
           style={{
-            width: 28,
-            height: 28,
-            borderTop: "2px solid rgba(255,255,255,0.7)",
-            borderLeft: "2px solid rgba(255,255,255,0.7)",
+            width: 34,
+            height: 34,
+            borderTop: "3px solid rgba(255,255,255,0.85)",
+            borderLeft: "3px solid rgba(255,255,255,0.85)",
           }}
         />
 
         {/* Top-right dashed bracket + corner dot */}
-        <div className="absolute top-0 right-0" style={{ width: 56, height: 56 }}>
+        <div className="absolute top-0 right-0" style={{ width: 64, height: 64 }}>
           <div
             className="absolute"
             style={{
@@ -147,18 +147,18 @@ function FrameBorder() {
           <div
             className="absolute"
             style={{
-              top: 9,
-              right: 9,
-              width: 34,
-              height: 34,
-              borderTop: "1px dashed rgba(255,255,255,0.3)",
-              borderRight: "1px dashed rgba(255,255,255,0.3)",
+              top: 12,
+              right: 12,
+              width: 40,
+              height: 40,
+              borderTop: "1px dashed rgba(255,255,255,0.42)",
+              borderRight: "1px dashed rgba(255,255,255,0.42)",
             }}
           />
           {/* Corner solid square */}
           <div
             className="absolute top-0 right-0"
-            style={{ width: 7, height: 7, background: "rgba(255,255,255,0.7)" }}
+            style={{ width: 8, height: 8, background: "rgba(255,255,255,0.85)" }}
           />
         </div>
 
@@ -168,10 +168,10 @@ function FrameBorder() {
         <div
           className="absolute bottom-0 right-0"
           style={{
-            width: 28,
-            height: 28,
-            borderBottom: "2px solid rgba(255,255,255,0.7)",
-            borderRight: "2px solid rgba(255,255,255,0.7)",
+            width: 34,
+            height: 34,
+            borderBottom: "3px solid rgba(255,255,255,0.85)",
+            borderRight: "3px solid rgba(255,255,255,0.85)",
           }}
         />
       </div>
