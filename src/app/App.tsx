@@ -162,18 +162,7 @@ function FrameBorder() {
           />
         </div>
 
-        {/* Bottom-left tick marks */}
-        <div
-          className="absolute left-0 flex flex-col gap-2.5"
-          style={{ bottom: "30%" }}
-        >
-          <div
-            style={{ width: 14, height: 1, background: "rgba(255,255,255,0.4)" }}
-          />
-          <div
-            style={{ width: 14, height: 1, background: "rgba(255,255,255,0.4)" }}
-          />
-        </div>
+        {/* Bottom-left tick marks removed per request */}
 
         {/* Bottom-right corner solid bracket */}
         <div
