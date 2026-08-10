@@ -1,0 +1,8 @@
+@import './fonts.css';
+@import './tailwind.css';
+@import './theme.css';
+
+/* Enable native smooth scrolling where supported */
+html {
+	scroll-behavior: smooth;
+}
