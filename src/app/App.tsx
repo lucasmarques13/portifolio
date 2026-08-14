@@ -13,6 +13,21 @@ interface Project {
   code: string | null;
 }
 
+interface Specialty {
+  title: string;
+  level: string;
+  description: string;
+}
+
+const specialties: Specialty[] = [
+  { title: 'FIGMA', level: 'Avançado', description: 'Design de sites e interfaces em Figma' },
+  { title: 'HTML & CSS', level: 'Básico', description: 'Markup e estilização usando Visual Studio Code' },
+  { title: 'COMPUTADORES', level: 'Intermediário', description: 'Montagem e configuração de hardware e sistemas' },
+  { title: 'SQL', level: 'Básico', description: 'Modelagem e consulta de bancos de dados' },
+  { title: 'IMPRESSORAS', level: 'Intermediário', description: 'Manutenção e suporte a impressoras' },
+  { title: 'REDES', level: 'Básico', description: 'Redes e arquitetura de computadores' },
+];
+
 const projects: Project[] = [
   {
     id: 1,
@@ -108,6 +123,42 @@ function Waves() {
   );
 }
 
+function GlobalInnerWaves() {
+  const padding = 12;
+  const [w, setW] = useState(typeof window !== 'undefined' ? window.innerWidth : 1200);
+
+  useEffect(() => {
+    function onResize() {
+      setW(window.innerWidth);
+    }
+    onResize();
+    window.addEventListener('resize', onResize);
+    return () => window.removeEventListener('resize', onResize);
+  }, []);
+
+  const heightPct = w < 640 ? '28%' : w < 1024 ? '36%' : '46%';
+
+  return (
+    <div
+      className="fixed pointer-events-none"
+      style={{ left: padding, right: padding, bottom: padding, height: heightPct, zIndex: 5, overflow: 'hidden' }}
+      aria-hidden="true"
+    >
+      <svg viewBox="0 0 1440 420" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" style={{ width: '100%', height: '100%', display: 'block' }}>
+        <rect width="1440" height="420" fill="#231462" />
+        <path d="M0,260 C180,190 380,310 620,248 C840,188 1020,290 1220,232 C1340,196 1400,255 1440,244 L1440,420 L0,420 Z" fill="rgba(55,32,115,0.9)" />
+        <path d="M0,292 C160,248 340,328 560,284 C780,240 960,312 1160,270 C1300,240 1385,286 1440,276 L1440,420 L0,420 Z" fill="rgba(80,52,145,0.75)" />
+        <path d="M0,316 C200,278 380,352 590,316 C790,280 990,348 1190,308 C1322,278 1400,320 1440,312 L1440,420 L0,420 Z" fill="rgba(110,78,168,0.62)" />
+        <path d="M0,342 C188,310 360,372 572,342 C768,312 970,366 1172,334 C1316,310 1402,348 1440,340 L1440,420 L0,420 Z" fill="rgba(140,105,192,0.50)" />
+        <path d="M0,364 C172,344 348,382 558,362 C758,342 958,378 1158,358 C1310,342 1404,368 1440,362 L1440,420 L0,420 Z" fill="rgba(168,138,210,0.38)" />
+        <path d="M0,382 C160,366 342,396 552,378 C752,360 952,392 1152,374 C1308,360 1406,384 1440,378 L1440,420 L0,420 Z" fill="rgba(190,162,225,0.28)" />
+      </svg>
+    </div>
+  );
+}
+
+// GlobalWaves removed — using per-section `Waves()` as before.
+
 function FrameBorder() {
   return (
     <div
@@ -179,9 +230,12 @@ function FrameBorder() {
   );
 }
 
+// MaskOverlay removed.
+
 export default function App() {
   const [activeSection, setActiveSection] = useState("home");
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [selectedSpecialty, setSelectedSpecialty] = useState<Specialty | null>(null);
   const [menuOpen, setMenuOpen] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
@@ -192,7 +246,36 @@ export default function App() {
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
   const [formSuccess, setFormSuccess] = useState(false);
 
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    const confirmedKey = "formsubmit_confirmation_sent";
+    if (window.localStorage.getItem(confirmedKey)) return;
+
+    fetch("https://formsubmit.co/ajax/lucasmotamattos@gmail.com", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify({
+        name: "Formsubmit email verification",
+        email: "noreply@lucasmotamattos.com",
+        subject: "Confirmação de formulário",
+        message: "Por favor, confirme este email para receber mensagens do formulário de contato.",
+        _subject: "Confirmação de formulário",
+        _captcha: false,
+      }),
+    })
+      .catch(() => {
+        // Ignore errors; the user can still submit later.
+      })
+      .finally(() => {
+        window.localStorage.setItem(confirmedKey, "1");
+      });
+  }, []);
+
   const homeRef = useRef<HTMLElement>(null);
+
   const aboutRef = useRef<HTMLElement>(null);
   const projectsRef = useRef<HTMLElement>(null);
   const contactRef = useRef<HTMLElement>(null);
@@ -282,12 +365,37 @@ export default function App() {
     return Object.keys(errors).length === 0;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (validate()) {
+    if (!validate()) return;
+
+    try {
+      const response = await fetch("https://formsubmit.co/ajax/lucasmotamattos@gmail.com", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          subject: formData.subject,
+          message: formData.message,
+          _subject: formData.subject,
+          _captcha: false,
+        }),
+      });
+
+      const data = await response.json();
+      if (!response.ok || data.success !== "true") {
+        throw new Error(data.message || "Falha ao enviar mensagem");
+      }
+
       setFormSuccess(true);
       setFormData({ name: "", email: "", subject: "", message: "" });
       setTimeout(() => setFormSuccess(false), 6000);
+    } catch (error) {
+      setFormErrors({ ...formErrors, message: "Não foi possível enviar. Tente novamente." });
     }
   };
 
@@ -298,9 +406,10 @@ export default function App() {
   return (
     <div
       className="relative min-h-screen overflow-x-hidden"
-      style={{ fontFamily: "'Outfit', sans-serif", background: "#231462" }}
+      style={{ fontFamily: "'Outfit', sans-serif", background: "#231462", padding: "12px", boxSizing: "border-box" }}
     >
       <FrameBorder />
+      <GlobalInnerWaves />
 
       {/* ── Fixed left sidebar (desktop) ── */}
       <aside className="fixed left-0 top-0 bottom-0 z-20 hidden lg:flex flex-col justify-between py-14 px-10 w-52">
@@ -436,26 +545,10 @@ export default function App() {
             </button>
           </div>
 
-          {/* Social links — desktop */}
-          <div className="absolute right-10 lg:right-16 top-1/2 -translate-y-1/2 hidden lg:flex flex-col gap-3.5 z-10">
-            {[
-              { label: "Instagram", href: "#" },
-              { label: "LinkedIn", href: "#" },
-            ].map(({ label, href }) => (
-              <a
-                key={label}
-                href={href}
-                rel="noopener noreferrer"
-                className="flex items-center gap-1.5 text-[0.72rem] text-white/35 hover:text-white/75 transition-colors duration-200"
-              >
-                {label}
-                <ExternalLink size={9} />
-              </a>
-            ))}
-          </div>
+          {/* Desktop social links removed — footer links used instead */}
 
-          <Waves />
-        </section>
+            
+          </section>
 
         
 
@@ -511,11 +604,21 @@ export default function App() {
                 style={{ borderTop: "1px solid rgba(255,255,255,0.12)" }}
               >
                 <p className="text-[0.6rem] text-white/35 uppercase tracking-[0.22em] mb-1.5">
-                  Curso
+                  Formação
                 </p>
-                <p className="text-[0.82rem] text-white/80">
-                  Técnico em TI — Cotemig Floresta
-                </p>
+                <div className="space-y-3 text-[0.82rem] text-white/80">
+                  <div>
+                    <p className="font-medium">Faculdade Cotemig — Ciências da Computação</p>
+                    <p className="text-white/65">Cursando atualmente o 3º semestre</p>
+                  </div>
+                  <div>
+                    <p className="font-medium">Colégio Cotemig — Técnico em Informática</p>
+                    <p className="text-white/65">Curso concluído • 2025</p>
+                  </div>
+                  <div>
+                    <p className="font-medium">Cultura Inglesa — Influence 3 • Língua Inglesa</p>
+                  </div>
+                </div>
               </div>
 
               <div>
@@ -523,20 +626,30 @@ export default function App() {
                   Tecnologias
                 </p>
                 <div className="flex flex-wrap gap-2">
-                  {["HTML", "CSS", "JavaScript", "C#", "SQL", "Git", "Figma"].map((tech) => (
-                    <span
-                      key={tech}
-                      className="text-[0.72rem] text-white/55 hover:text-white/90 hover:border-white/45 transition-all duration-200 cursor-default px-2.5 py-1"
-                      style={{ border: "1px solid rgba(255,255,255,0.2)" }}
+                  {specialties.map((item) => (
+                    <button
+                      key={item.title}
+                      type="button"
+                      onClick={() => setSelectedSpecialty(item)}
+                      className="inline-flex min-w-[75px] rounded-sm border border-white/15 bg-white/5 px-3 py-2 text-[0.72rem] uppercase font-semibold tracking-[0.14em] text-white transition-all duration-200 hover:border-white/30 hover:bg-white/10"
                     >
-                      {tech}
-                    </span>
+                      {item.title}
+                    </button>
                   ))}
                 </div>
               </div>
-            </div>
+              <div className="mt-8">
+                <a
+                  href="/Curriculo_Lucas_Marques_Mattos.pdf"
+                  download
+                  className="inline-flex items-center justify-center rounded-sm border border-white/20 px-5 py-3 text-sm text-white/75 transition-colors duration-200 hover:border-white/40 hover:text-white"
+                  style={{ background: 'rgba(255,255,255,0.06)' }}
+                >
+                  Download do CV
+                </a>
+              </div>            </div>
           </div>
-          <Waves />
+          
         </section>
 
         {/* ────────── PROJECTS ────────── */}
@@ -581,7 +694,7 @@ export default function App() {
               ))}
             </div>
           </div>
-          <Waves />
+          
         </section>
 
         {/* ────────── CONTACT ────────── */}
@@ -747,7 +860,7 @@ export default function App() {
               ))}
             </div>
           </div>
-          <Waves />
+          
         </section>
       </main>
 
@@ -797,8 +910,8 @@ export default function App() {
               {selectedProject.date} / {selectedProject.type}
             </p>
             <h3
-              className="text-3xl font-light text-white mb-5"
-              style={{ fontFamily: "'Playfair Display', serif" }}
+              className="text-3xl font-semibold uppercase tracking-[0.08em] text-white mb-5"
+              style={{ fontFamily: "'Outfit', sans-serif" }}
             >
               {selectedProject.name}
             </h3>
@@ -860,6 +973,47 @@ export default function App() {
                 </a>
               )}
             </div>
+          </div>
+        </div>
+      )}
+      {selectedSpecialty && (
+        <div
+          className="fixed inset-0 z-40 flex items-center justify-center p-6"
+          style={{ background: "rgba(14, 6, 48, 0.94)" }}
+          onClick={(e) => {
+            if (e.target === e.currentTarget) setSelectedSpecialty(null);
+          }}
+          role="dialog"
+          aria-modal="true"
+          aria-label={`Detalhes — ${selectedSpecialty.title}`}
+        >
+          <div
+            className="relative w-full max-w-md"
+            style={{
+              border: "1px solid rgba(255,255,255,0.3)",
+              background: "#231462",
+              padding: "32px 28px",
+            }}
+          >
+            <button
+              onClick={() => setSelectedSpecialty(null)}
+              aria-label="Fechar"
+              className="absolute top-4 right-4 text-white/35 hover:text-white transition-colors"
+            >
+              <CloseIcon size={16} />
+            </button>
+            <p className="text-[0.67rem] text-white/32 mb-2" style={{ letterSpacing: "0.06em" }}>
+              {selectedSpecialty.level}
+            </p>
+            <h3
+              className="text-3xl font-semibold uppercase tracking-[0.08em] text-white mb-4"
+              style={{ fontFamily: "'Outfit', sans-serif" }}
+            >
+              {selectedSpecialty.title}
+            </h3>
+            <p className="text-[0.82rem] text-white/60 leading-relaxed">
+              {selectedSpecialty.description}
+            </p>
           </div>
         </div>
       )}
