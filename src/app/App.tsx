@@ -38,7 +38,7 @@ const projects: Project[] = [
       "Site completo para delivery de café artesanal, com cardápio interativo, sistema de pedidos e identidade visual desenvolvida do zero no Figma.",
     technologies: ["HTML", "CSS", "JavaScript", "Figma"],
     year: "2024",
-    link: "#",
+    link: "https://anjoscafe.netlify.app/",
     code: "#",
   },
   {
@@ -50,7 +50,7 @@ const projects: Project[] = [
       "Landing page responsiva para academia fitness com seções de serviços, planos de assinatura e formulário de contato integrado.",
     technologies: ["HTML", "CSS", "JavaScript"],
     year: "2024",
-    link: "#",
+    link: "https://lucasmarquessiteflex.netlify.app/",
     code: "#",
   },
   {
@@ -62,7 +62,7 @@ const projects: Project[] = [
       "Plataforma de delivery com interface moderna, filtros por categoria de alimento, carrinho de compras e fluxo de finalização de pedido.",
     technologies: ["HTML", "CSS", "JavaScript", "Figma"],
     year: "2024",
-    link: "#",
+    link: "https://food-dash-lucasmarques13.netlify.app/",
     code: null,
   },
   {
@@ -74,7 +74,7 @@ const projects: Project[] = [
       "Site institucional e cardápio digital para restaurante italiano artesanal, com galeria de pratos, história da marca e reserva de mesas.",
     technologies: ["HTML", "CSS", "Figma"],
     year: "2024",
-    link: "#",
+    link: "https://massas-lili.netlify.app/",
     code: null,
   },
 ];
@@ -663,7 +663,8 @@ export default function App() {
               {projects.map((project) => (
                 <button
                   key={project.id}
-                  onClick={() => setSelectedProject(project)}
+                  onClick={() => window.open(project.link, "_blank", "noopener,noreferrer")}
+                  aria-label={`Abrir o projeto ${project.name}`}
                   className="group w-full flex flex-col lg:flex-row lg:items-baseline lg:justify-between gap-2 lg:gap-8 py-5 text-left transition-all duration-300 hover:pl-2"
                   style={{ borderBottom: "1px solid rgba(255,255,255,0.1)" }}
                   onMouseEnter={(e) => {
