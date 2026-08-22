@@ -39,7 +39,7 @@ const projects: Project[] = [
     technologies: ["HTML", "CSS", "JavaScript", "Figma"],
     year: "2024",
     link: "https://anjoscafe.netlify.app/",
-    code: "#",
+    code: "https://github.com/lucasmarques13/anjoscafe",
   },
   {
     id: 2,
@@ -51,7 +51,7 @@ const projects: Project[] = [
     technologies: ["HTML", "CSS", "JavaScript"],
     year: "2024",
     link: "https://lucasmarquessiteflex.netlify.app/",
-    code: "#",
+    code: "https://github.com/lucasmarques13/lucasmarquessiteflex",
   },
   {
     id: 3,
@@ -63,7 +63,7 @@ const projects: Project[] = [
     technologies: ["HTML", "CSS", "JavaScript", "Figma"],
     year: "2024",
     link: "https://food-dash-lucasmarques13.netlify.app/",
-    code: null,
+    code: "https://github.com/lucasmarques13/food-dash",
   },
   {
     id: 4,
@@ -75,7 +75,7 @@ const projects: Project[] = [
     technologies: ["HTML", "CSS", "Figma"],
     year: "2024",
     link: "https://massas-lili.netlify.app/",
-    code: null,
+    code: "https://github.com/lucasmarques13/massas-lili",
   },
 ];
 
@@ -663,7 +663,7 @@ export default function App() {
               {projects.map((project) => (
                 <button
                   key={project.id}
-                  onClick={() => window.open(project.link, "_blank", "noopener,noreferrer")}
+                  onClick={() => setSelectedProject(project)}
                   aria-label={`Abrir o projeto ${project.name}`}
                   className="group w-full flex flex-col lg:flex-row lg:items-baseline lg:justify-between gap-2 lg:gap-8 py-5 text-left transition-all duration-300 hover:pl-2"
                   style={{ borderBottom: "1px solid rgba(255,255,255,0.1)" }}
@@ -943,6 +943,7 @@ export default function App() {
             >
               <a
                 href={selectedProject.link}
+                target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-2 text-[0.75rem] text-white/55 hover:text-white transition-all duration-200 px-4 py-2"
                 style={{ border: "1px solid rgba(255,255,255,0.22)" }}
@@ -959,6 +960,7 @@ export default function App() {
               {selectedProject.code && (
                 <a
                   href={selectedProject.code}
+                  target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-2 text-[0.75rem] text-white/55 hover:text-white transition-all duration-200 px-4 py-2"
                   style={{ border: "1px solid rgba(255,255,255,0.22)" }}
