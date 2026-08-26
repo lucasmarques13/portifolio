@@ -246,34 +246,6 @@ export default function App() {
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
   const [formSuccess, setFormSuccess] = useState(false);
 
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-    const confirmedKey = "formsubmit_confirmation_sent";
-    if (window.localStorage.getItem(confirmedKey)) return;
-
-    fetch("https://formsubmit.co/ajax/lucasmotamattos@gmail.com", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-      },
-      body: JSON.stringify({
-        name: "Formsubmit email verification",
-        email: "noreply@lucasmotamattos.com",
-        subject: "Confirmação de formulário",
-        message: "Por favor, confirme este email para receber mensagens do formulário de contato.",
-        _subject: "Confirmação de formulário",
-        _captcha: false,
-      }),
-    })
-      .catch(() => {
-        // Ignore errors; the user can still submit later.
-      })
-      .finally(() => {
-        window.localStorage.setItem(confirmedKey, "1");
-      });
-  }, []);
-
   const homeRef = useRef<HTMLElement>(null);
 
   const aboutRef = useRef<HTMLElement>(null);
