@@ -844,10 +844,10 @@ export default function App() {
             {/* Social links */}
             <div className="flex flex-wrap justify-center gap-5 mt-8">
               {[
-                { label: "Instagram", href: "#" },
-                { label: "LinkedIn", href: "#" },
-                { label: "GitHub", href: "#" },
-                { label: "E-mail", href: "#" },
+                { label: "Instagram", href: "https://www.instagram.com/mrqss._s/" },
+                { label: "LinkedIn", href: "https://www.linkedin.com/in/lucas-mattos-254451262/" },
+                { label: "GitHub", href: "#projects" },
+                { label: "E-mail", href: "mailto:lucasmotamattos@gmail.com" },
               ].map(({ label, href }) => (
                 <a
                   key={label}
