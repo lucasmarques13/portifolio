@@ -846,7 +846,7 @@ export default function App() {
               {[
                 { label: "Instagram", href: "https://www.instagram.com/mrqss._s/" },
                 { label: "LinkedIn", href: "https://www.linkedin.com/in/lucas-mattos-254451262/" },
-                { label: "GitHub", href: "#projects" },
+                { label: "GitHub", href: "https://github.com/lucasmarques13" },
                 { label: "E-mail", href: "mailto:lucasmotamattos@gmail.com" },
               ].map(({ label, href }) => (
                 <a
