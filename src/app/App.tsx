@@ -858,11 +858,15 @@ export default function App() {
                 { label: "Instagram", href: "https://www.instagram.com/mrqss._s/" },
                 { label: "LinkedIn", href: "https://www.linkedin.com/in/lucas-mattos-254451262/" },
                 { label: "GitHub", href: "https://github.com/lucasmarques13" },
-                { label: "E-mail", href: "mailto:lucasmotamattos@gmail.com" },
+                {
+                  label: "E-mail",
+                  href: "https://mail.google.com/mail/?view=cm&fs=1&to=lucasmotamattos@gmail.com",
+                },
               ].map(({ label, href }) => (
                 <a
                   key={label}
                   href={href}
+                  target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-1 text-[0.72rem] text-white/35 hover:text-white/75 transition-colors duration-200"
                 >
