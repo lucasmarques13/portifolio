@@ -647,7 +647,18 @@ export default function App() {
                 >
                   Download do CV
                 </a>
-              </div>            </div>
+              </div>
+              <div className="mt-5 text-center">
+                <a
+                  href="https://wa.me/5531989870988"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[0.78rem] text-white/60 transition-colors duration-200 hover:text-white"
+                >
+                  WhatsApp: +55 (31) 98987-0988
+                </a>
+              </div>
+            </div>
           </div>
           
         </section>
